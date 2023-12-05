@@ -30,6 +30,11 @@
     "scheme": [
       "FbLogin",
       "fb1484540205670419"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ced6ea46-3f82-4765-9551-e29b0197fa74"
+      }
+    }
   }
 }
