@@ -1,3 +1,4 @@
+// Customer ID:
 //android: 100761456125-194nq3bsj67li17euqe4sbp7abnm5ank.apps.googleusercontent.com
 
 import { useState, useEffect } from "react";
@@ -6,7 +7,7 @@ import { StyleSheet, Text, View, Image, SafeAreaView } from "react-native";
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
 import { Button } from "react-native";
-
+import * as AuthSession from "expo-auth-session";
 import * as Google from "expo-auth-session/providers/google";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -21,21 +22,25 @@ export default function App() {
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
       "100761456125-194nq3bsj67li17euqe4sbp7abnm5ank.apps.googleusercontent.com",
+    webClientId:
+      "100761456125-bvl1p3sdr7g6lkh2lkslug396a3gc3c9.apps.googleusercontent.com",
   });
-  useEffect(() => {
-    if (response && response.type === "success" && response.authentication) {
-      (async () => {
-        const userInfoResponse = await fetch(
-          `https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(large)&access_token=${response.authentication.accessToken}`
-        );
-        const userInfo = await userInfoResponse.json();
-        console.log(JSON.stringify(userInfo));
-        setUser(userInfo);
-        setToken(response.authentication.accessToken);
-      })();
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response && response.type === "success" && response.authentication) {
+  //     (async () => {
+  //       const userInfoResponse = await fetch(
+  //         `https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(large)&access_token=${response.authentication.accessToken}`
+  //       );
+  //       const userInfo = await userInfoResponse.json();
+  //       console.log(JSON.stringify(userInfo));
+  //       setUser(userInfo);
+  //       setToken(response.authentication.accessToken);
+  //     })();
+  //   }
+  // }, [response]);
   const handlePressAsync = async () => {
+    const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
+    console.log(redirectUri);
     const result = await promptAsync();
     console.log(result);
     if (result.type === "error") {
